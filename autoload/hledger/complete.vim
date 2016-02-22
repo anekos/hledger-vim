@@ -1,8 +1,11 @@
+let s:save_cpo = &cpo
+set cpo&vim
+
 
 let s:cache = {'accounts': [], 'titles': []}
 let s:initialized = 0
 
-function! s:initialize()
+function! s:initialize() abort
   if s:initialized
     return
   endif
@@ -118,3 +121,7 @@ function! hledger#complete#omnifunc (findstart, base) abort
     return s:getlist(a:base)
   endif
 endfunction
+
+
+let &cpo = s:save_cpo
+unlet s:save_cpo
