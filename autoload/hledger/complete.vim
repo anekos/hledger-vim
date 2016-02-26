@@ -95,7 +95,8 @@ endfunction
 
 function! s:getlist (base) abort
   let l:line = getline('.')
-  if l:line =~ '^ \+'
+  let l:col = col('.')
+  if l:col > 1
     return s:account(a:base)
   elseif l:line =~ '^\d\+/\d\+/\d\+ \+'
     return s:title(a:base)

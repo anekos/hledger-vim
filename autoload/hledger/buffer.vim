@@ -22,10 +22,21 @@ function! hledger#buffer#clone_transaction(start) abort
     let l:end += 1
   endwhile
 
-  let l:transaction[1] = substitute(l:transaction[1], '^\S\+', strftime("%Y/%m/%d "), '')
+  let l:transaction[1] = substitute(l:transaction[1], '^\S\+', strftime("%Y/%m/%d"), '')
 
   call append(line('$'), l:transaction)
   normal Gzz
+  call hledger#buffer#select_date()
+endfunction
+
+function! hledger#buffer#select_date() abort
+  let l:start = hledger#buffer#search_transaction_start()
+  execute l:start
+  normal vE
+endfunction
+
+function! hledger#buffer#select_next() abort
+  " NOT IMPLEMENTED
 endfunction
 
 

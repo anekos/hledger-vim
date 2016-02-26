@@ -14,7 +14,7 @@ let s:kind.action_table.clone = {
 \ 'description' : 'Clone transaction',
 \}
 function! s:kind.action_table.clone.func(candidate) abort
-  call hledger#buffer#clone_transaction(a:candidate.word)
+  call hledger#buffer#clone_transaction(a:candidate.lnum)
 endfunction
 
 function! unite#kinds#hledger#define()
