@@ -4,24 +4,14 @@ set cpo&vim
 
 
 function! hledger#command#clone_transaction() abort
-  let l:start = line('.')
-
-  while match(getline(l:start), '^\d\+/\d\+/\d\+') < 0
-    let l:start -= 1
-  endwhile
-
-  let l:transaction = ['']
-
-  let l:end = l:start
-  while match(getline(l:end), '^$') < 0
-    call add(l:transaction, getline(l:end))
-    let l:end += 1
-  endwhile
-
-  call append(line('$'), l:transaction)
-  normal Gzz
+  call hledger#buffer#clone_transaction(hledger#buffer#search_transaction_start())
 endfunction
 
+
+function! hledger#command#unite_transactions() abort
+  call unite#custom#source('hledger', 'matchers', 'matcher_migemo')
+  call unite#start([['hledger']])
+endfunction
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

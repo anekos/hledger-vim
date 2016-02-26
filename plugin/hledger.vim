@@ -9,6 +9,7 @@ set cpo&vim
 
 
 nnoremap <silent> <Plug>(hledger-clone-transaction) :<C-u>call hledger#command#clone_transaction()<CR>
+nnoremap <silent> <Plug>(hledger-unite-transactions) :<C-u>call hledger#command#unite_transactions()<CR>
 
 
 let &cpo = s:save_cpo

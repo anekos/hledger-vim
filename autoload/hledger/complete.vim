@@ -58,7 +58,7 @@ function! s:date (base) abort
     let l:line = getline(l:cur_lnum - l:lnum_d)
     let l:matched = matchstr(l:line, '^\d\+/\d\+/\d\+')
     if len(l:matched) > 0
-      call add(l:result, l:matched . ' ')
+      call add(l:result, l:matched)
     endif
   endfor
 
