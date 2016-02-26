@@ -33,6 +33,11 @@ INTRODUCTION							*hledger-introduction* {{{
 
 This plugin supports writing hledger journal.
 
+Provided features:
+  - Omni completion
+  - Unite source 'hledger'
+  - Some mappings
+
 }}}
 ==============================================================================
 INTERFACE								*hledger-interface* {{{
