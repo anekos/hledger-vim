@@ -2,7 +2,7 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 
-let s:cache = {'accounts': [], 'titles': []}
+let s:cache = {'accounts': {}, 'titles': []}
 let s:initialized = 0
 
 function! s:initialize() abort
@@ -10,18 +10,23 @@ function! s:initialize() abort
     return
   endif
 
-  let l:found_accounts = {}
   let l:title_counter = {}
-  let l:result = []
+  let l:result = {}
 
   let l:title_max = get(g:, 'hledger_title_completion_max', 20)
 
   for l:lnum in range(1, line('$'))
 
     let l:account_name = matchstr(getline(l:lnum), '^ \+[^ ]\+')
-    if len(l:account_name) > 0 && !has_key(l:found_accounts, l:account_name)
-      call add(l:result, substitute(l:account_name, '^ *', '', ''))
-      let l:found_accounts[l:account_name] = 1
+
+    if len(l:account_name) > 0
+      let l:account = l:result
+      for l:path in split(substitute(l:account_name, '^ *', '', ''), ':')
+        if !has_key(l:account, l:path)
+          let l:account[l:path] = {}
+        endif
+        let l:account = l:account[l:path]
+      endfor
     endif
 
     let l:title = substitute(matchstr(getline(l:lnum), '^\d\+/\d\+/\d\+ \+.\+$'), '^.* \+', '', '')
@@ -39,7 +44,6 @@ function! s:initialize() abort
     call add(l:title_counts, string(l:title_counter[l:title]) . ':' . l:title)
   endfor
   call sort(l:title_counts, 'N')
-
 
   let s:cache.accounts = l:result
   let s:cache.titles = reverse(map(l:title_counts[-l:title_max : ], 'substitute(v:val, ".*:", "", "")'))
@@ -67,25 +71,30 @@ function! s:date (base) abort
   return l:result
 endfunction
 
-function! s:account (base) abort
-  let l:pattern = substitute(a:base, ':', '[^: ]*:', 'g')
-
-  if a:base !~ ':'
-    let l:short = ''
-    for l:c in split(a:base, '\zs')
-      let l:short .= l:c . '[^: ]*:'
-    endfor
-    let l:pattern .= '\|' . l:short[: -2]
+function! s:account_add (result, account, path, prefix)
+  if len(a:path) <= 0
+    return
   endif
 
-  let l:pattern = '^\(' . l:pattern . '\).*'
+  let l:pattern = printf('.*%s.*', a:path[0])
+  if len(a:path) == 1
+    for l:key in keys(a:account)
+      if l:key =~ l:pattern
+        call add(a:result, join(a:prefix + [l:key], ':'))
+      endif
+    endfor
+  else
+    for l:key in keys(a:account)
+      if l:key =~ l:pattern
+        call s:account_add(a:result, a:account[l:key], a:path[1:], a:prefix + [l:key])
+      endif
+    endfor
+  endif
+endfunction
 
+function! s:account (base) abort
   let l:result = []
-  for l:account in s:cache.accounts
-    if match(l:account, l:pattern) >= 0
-      call add(l:result, l:account)
-    endif
-  endfor
+  call s:account_add(l:result, s:cache.accounts, split(a:base, ':', -1), [])
   return l:result
 endfunction
 
