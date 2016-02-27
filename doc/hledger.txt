@@ -1,4 +1,4 @@
-*hledger.txt* *hledger*
+c*hledger.txt* *hledger*
 
 Author:
   anekos <anekos@snca.net>
@@ -46,6 +46,7 @@ KEYMAPPINGS								*hledger-keymappings* {{{
 
 (n) <Plug>(hledger-clone-transaction)					*<Plug>(hledger-clone-transaction)*
 (n) <Plug>(hledger-unite-transactions)					*<Plug>(hledger-unite-transactions)*
+(n) <Plug>(hledger-go-next)					*<Plug>(hledger-go-next)*
 
 }}}
 ------------------------------------------------------------------------------
