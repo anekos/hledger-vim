@@ -77,19 +77,17 @@ function! s:account_add (result, account, path, prefix)
   endif
 
   let l:pattern = printf('.*%s.*', a:path[0])
-  if len(a:path) == 1
-    for l:key in keys(a:account)
-      if l:key =~ l:pattern
+  let l:last = len(a:path) == 1
+
+  for l:key in keys(a:account)
+    if l:key =~ l:pattern
+      if l:last
         call add(a:result, join(a:prefix + [l:key], ':'))
-      endif
-    endfor
-  else
-    for l:key in keys(a:account)
-      if l:key =~ l:pattern
+      else
         call s:account_add(a:result, a:account[l:key], a:path[1:], a:prefix + [l:key])
       endif
-    endfor
-  endif
+    endif
+  endfor
 endfunction
 
 function! s:account (base) abort
