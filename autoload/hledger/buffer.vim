@@ -35,8 +35,15 @@ function! hledger#buffer#select_date() abort
   normal vE
 endfunction
 
-function! hledger#buffer#select_next() abort
-  " NOT IMPLEMENTED
+function! hledger#buffer#go_next() abort
+  let l:line = getline('.')
+
+  if l:line =~ '^\s\+\S\+\s\+$'
+    let l:spaces = printf('%' . (50 - max([2, len(l:line)])) .'s', '')
+    return 'A' . l:spaces
+  else
+    return "\<Esc>WvE"
+  endif
 endfunction
 
 

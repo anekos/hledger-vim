@@ -104,6 +104,10 @@ function! s:getlist (base) abort
   let l:line = getline('.')
   let l:col = col('.')
   if l:col > 1
+    let l:matched = matchlist(l:line, '^\(\s\+\S\+\)\s\+')
+    if len(l:matched) && len(l:matched[1]) < l:col
+      return []
+    endif
     return s:account(a:base)
   elseif l:line =~ '^\d\+/\d\+/\d\+ \+'
     return s:title(a:base)
