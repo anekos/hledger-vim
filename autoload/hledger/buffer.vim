@@ -38,7 +38,7 @@ endfunction
 function! hledger#buffer#go_next() abort
   let l:line = getline('.')
 
-  if l:line =~ '^\s\+\S\+\s\+$'
+  if l:line =~ '^\s\+\S\+\s*$'
     let l:spaces = printf('%' . (50 - max([2, len(l:line)])) .'s', '')
     return 'A' . l:spaces
   else
