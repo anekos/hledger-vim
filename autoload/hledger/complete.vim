@@ -76,7 +76,7 @@ function! s:account_add (result, account, path, prefix)
     return
   endif
 
-  let l:pattern = printf('.*%s.*', a:path[0])
+  let l:pattern = printf('^%s.*', a:path[0])
   let l:last = len(a:path) == 1
 
   for l:key in keys(a:account)
