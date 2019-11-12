@@ -121,6 +121,12 @@ endfunction
 
 function! s:getpos (base) abort
   let l:line = getline('.')
+
+  " とりあえずウザイのでタイトルと金額では補完しない
+  if l:line =~ '^\d\+/\d\+/\d\+ \+' || l:line =~ '^\s\+\S\+\s\+'
+    return -3
+  endif
+
   let l:start = col('.') - 1
   while l:start > 0 && line[l:start - 1] != ' '
     let l:start -= 1
