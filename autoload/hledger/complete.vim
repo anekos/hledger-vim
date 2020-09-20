@@ -92,7 +92,7 @@ endfunction
 
 function! s:account (base) abort
   let l:result = []
-  call s:account_add(l:result, s:cache.accounts, split(a:base, ':', -1), [])
+  call s:account_add(l:result, s:cache.accounts, split(a:base, ':', 1), [])
   if a:base =~ '^[^: ]\+$'
     call s:account_add(l:result, s:cache.accounts, split(a:base, '\zs'), [])
   endif
