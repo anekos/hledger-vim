@@ -33,6 +33,10 @@ local function build_candidates()
       table.insert(M.candidates, {
         label = account_name,
         filterText = account_name .. ' ' .. shorten(account_name),
+        sortText = '999999' .. account_name,
+        data = {
+          alias = shorten(account_name),
+        },
       })
       m[account_name] = true
     end
@@ -46,9 +50,20 @@ function M.is_available()
 end
 
 function M:complete(params, callback)
-  local candidates = build_candidates()
+  local all = build_candidates()
+  local candidates = {}
 
-  -- local filter = params.context.cursor_before_line:lower()
+  local filter = vim.trim(params.context.cursor_before_line:lower())
+
+  if 2 <= #filter then
+    for _, candidate in ipairs(all) do
+      if candidate.data.alias == filter then
+        table.insert(candidates, vim.tbl_extend('force', candidate, { sortText = '000001' .. candidate.label }))
+      end
+    end
+  end
+
+  vim.list_extend(candidates, all)
 
   if vim.startswith(params.context.cursor_before_line, '  ') then
     callback(candidates)
