@@ -28,7 +28,7 @@ local function build_candidates()
   local m = {}
 
   for _, line in ipairs(lines) do
-    local account_name = line:match('^%s+([%w:]+)')
+    local account_name = line:match('^%s+([-%w:]+)')
     if account_name and not m[account_name] then
       table.insert(M.candidates, {
         label = account_name,
