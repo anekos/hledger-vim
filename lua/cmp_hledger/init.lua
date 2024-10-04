@@ -45,6 +45,10 @@ local function build_candidates()
   return M.candidates
 end
 
+function M.get_keyword_pattern()
+  return [[\k\+]]
+end
+
 function M.is_available()
   return vim.o.filetype == 'hledger'
 end
