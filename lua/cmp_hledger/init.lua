@@ -22,7 +22,7 @@ local function build_candidates()
 
   local ln = vim.fn.line('$')
 
-  local lines = vim.api.nvim_buf_get_lines(0, math.max(1, ln - 1000), ln, true)
+  local lines = vim.api.nvim_buf_get_lines(0, math.max(1, ln - 10000), ln, true)
   vim.fn.reverse(lines)
 
   local m = {}
